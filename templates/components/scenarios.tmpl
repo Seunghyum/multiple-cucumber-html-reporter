@@ -71,8 +71,8 @@
                 <div class="clearfix"></div>
             </div>
 
+            <div class="scenario-description"><%= scenario.description %></div>
             <div class="x_content" style="display: none;">
-                <div class="scenario-step-container"><%= scenario.description %></div>
                 <% _.each(scenario.steps, function(step, stepIndex) { %>
                     <% if(!step.hidden || step.image || step.text || step.html || step.attachment) { %>
                         <div class="scenario-step-container">
