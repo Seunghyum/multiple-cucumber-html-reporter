@@ -72,7 +72,79 @@
             </div>
 
             <div class="scenario-description"><%= scenario.description %></div>
+
             <div class="x_content" style="display: none;">
+
+                <div class="overall-step-list well">
+                    <h3>Overview</h3>
+                    <table class="table table-responsive">
+                        <tbody>
+                                <% _.each(scenario.steps, function(step, stepIndex) { %>
+                                    <% if(!step.hidden || step.image || step.text || step.html || step.attachment) { %>
+                                    <tr>
+                                        <td>
+                                            <% if(step.result) { %>
+                                                <% if(step.result.status === 'passed') { %>
+                                                    <div class="label" title="Success">
+                                                        <i class="fa fa-check-circle fa-2x passed-color" data-toggle="tooltip" data-placement="top" title="Step passed"></i>
+                                                    </div>
+                                                <% } else if(step.result.status === 'failed') { %>
+                                                    <div class="label" data-toggle="tooltip" data-placement="top" title="Step failed">
+                                                        <i class="fa fa-exclamation-circle fa-2x failed-color"></i>
+                                                    </div>
+                                                <% } else if(step.result.status === 'skipped') { %>
+                                                    <div class="label" data-toggle="tooltip" data-placement="top" title="Step is skipped">
+                                                        <i class="fa fa-arrow-circle-right fa-2x skipped-color"></i>
+                                                    </div>
+                                                <% } else if(step.result.status === 'pending') { %>
+                                                    <div class="label" data-toggle="tooltip" data-placement="top" title="Step is pending">
+                                                        <i class="fa fa-minus-circle fa-2x pending-color"></i>
+                                                    </div>
+                                                <% } else if(step.result.status === 'ambiguous') { %>
+                                                    <div class="label" data-toggle="tooltip" data-placement="top" title="Step has double step implementation and failed because of that.">
+                                                        <i class="fa fa-flash fa-2x ambiguous-color"></i>
+                                                    </div>
+                                                <% } else { %>
+                                                    <div class="label" data-toggle="tooltip" data-placement="top" title="Step has no implementation.">
+                                                        <i class="fa fa-question-circle fa-2x not-defined-color"></i>
+                                                    </div>
+                                                <% } %>
+                                            <% } %>
+                                        </td>
+
+                                        <td>
+                                            <span class="keyword highlight"><%= step.keyword %></span>
+
+                                            <% if(step.name) { %>
+                                                <%= step.name.replace(/</g, '&lt;').replace(/>/g, '&gt;') %>
+                                                <% if(step.restWireData) { %>
+                                                    <button type="button" class="btn btn-success btn-sm" data-toggle="collapse" data-target="#<%= step.id%>">REST Query</button>
+                                                    <div id="<%= step.id%>" class="collapse">
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-body">
+                                                                <pre><%= step.restWireData %></pre>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                <% } %>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <% if(suite.displayDuration) { %>
+                                                <% if (step.time) { %>
+                                                    <span class="duration"><%= step.time %></span>
+                                                <% } else { %>
+                                                    <span class="duration">0s</span>
+                                                <% } %>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
+
                 <% _.each(scenario.steps, function(step, stepIndex) { %>
                     <% if(!step.hidden || step.image || step.text || step.html || step.attachment) { %>
                         <div class="scenario-step-container">
